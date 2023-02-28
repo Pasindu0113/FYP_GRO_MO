@@ -67,7 +67,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               const SizedBox(
                 height: 20,
               ),
-              signInSignUpButton(context, false, () {
+              reusableButton(context, "REGISTER", () {
                 FirebaseAuth.instance.createUserWithEmailAndPassword(email: _emailTextController.text, password: _passwordTextController.text).then((value) {
                   print("Created New Account");
                   Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));

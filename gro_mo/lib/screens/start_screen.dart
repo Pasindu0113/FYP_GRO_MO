@@ -32,13 +32,13 @@ class _StartScreenState extends State<StartScreen> {
               ),
               Row(mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  signInSignUpButton(context, true, () {
+                  reusableButton(context, "SIGN IN", () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => SignInScreen()));
                   }, 170, 50, Color(0xFF2C424F)),
                   const SizedBox(
                     width: 10,
                   ),
-                  signInSignUpButton(context, false, () {
+                  reusableButton(context, "REGISTER", () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpScreen()));
                   }, 170, 50, Color(0xFF2C424F)),
                 ],),

@@ -38,7 +38,7 @@ TextField reusableTextField(String text, IconData icon, bool isPasswordType,
   );
 }
 
-Container signInSignUpButton(BuildContext context, bool isLogin, Function onTap,
+Container reusableButton(BuildContext context, String title, Function onTap,
     double buttonWidth, double buttonHeight, Color color) {
   return Container(
     width: buttonWidth,
@@ -59,9 +59,12 @@ Container signInSignUpButton(BuildContext context, bool isLogin, Function onTap,
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)))),
       child: Text(
-        isLogin ? 'LOG IN' : 'REGISTER',
+        title,
         style: const TextStyle(
-            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16, fontFamily: 'Roboto'),
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+            fontFamily: 'Roboto'),
       ),
     ),
   );
