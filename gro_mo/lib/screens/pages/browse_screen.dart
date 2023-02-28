@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -18,6 +19,9 @@ class _BrowseScreenState extends State<BrowseScreen> {
         child: ElevatedButton(
           child: const Text("Logout"),
           onPressed: () {
+            FirebaseAuth.instance.signOut().then((value) {
+              print("Signed Out");
+            });
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => StartScreen()));
           },

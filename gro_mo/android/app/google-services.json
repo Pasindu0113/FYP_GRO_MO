@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "166300771720",
+    "project_id": "fyp-gro-mo",
+    "storage_bucket": "fyp-gro-mo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:166300771720:android:52b04ea32669091ccdc63d",
+        "android_client_info": {
+          "package_name": "com.example.gro_mo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "166300771720-sjjn00n8tj7icnl5rgjhb3alei5u18cg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.gro_mo",
+            "certificate_hash": "7aa1b613407df06f04930af58c9dee436fca4518"
+          }
+        },
+        {
+          "client_id": "166300771720-q4us0kh91q8gsbq5v6o6mvdvfv60vcbj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmJloj5HiFeDcqCvp_p5VAOTe18eCo_8c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "166300771720-q4us0kh91q8gsbq5v6o6mvdvfv60vcbj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

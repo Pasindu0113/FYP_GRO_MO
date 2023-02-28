@@ -1,5 +1,6 @@
 //import 'package:flutter/src/widgets/framework.dart';
 //import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gro_mo/screens/signup_screen.dart';
 
@@ -65,7 +66,21 @@ class _SignInScreenState extends State<SignInScreen> {
                 height: 20,
               ),
               signInSignUpButton(context, true, () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                FirebaseAuth.instance.signInWithEmailAndPassword(email: _userNameTextController.text, password: _passwordTextController.text).then((value) {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                }).catchError((onError){
+                  showDialog(context: context, builder: (BuildContext context){
+                    return AlertDialog(
+                      title: Text("Error"),
+                      content: Text(onError.toString()),
+                      actions: [
+                        ElevatedButton(onPressed: () {
+                          Navigator.of(context).pop();
+                        }, child: Text("Ok"))
+                      ],
+                    );
+                  });
+                });
               }, MediaQuery.of(context).size.width, 50, Color(0xFF101D24)),
             ]),
           ),
