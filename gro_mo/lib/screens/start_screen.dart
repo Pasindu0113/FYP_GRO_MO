@@ -32,7 +32,7 @@ class _StartScreenState extends State<StartScreen> {
               ),
               Row(mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  reusableButton(context, "SIGN IN", () {
+                  reusableButton(context, "LOG IN", () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => SignInScreen()));
                   }, 170, 50, Color(0xFF2C424F)),
                   const SizedBox(

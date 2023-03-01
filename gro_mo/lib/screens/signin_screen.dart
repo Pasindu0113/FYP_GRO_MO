@@ -70,7 +70,7 @@ class _SignInScreenState extends State<SignInScreen> {
               const SizedBox(
                 height: 20,
               ),
-              reusableButton(context, "SIGN IN", () {
+              reusableButton(context, "LOG IN", () {
                 FirebaseAuth.instance.signInWithEmailAndPassword(email: _userNameTextController.text, password: _passwordTextController.text).then((value) {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
                 }).catchError((onError){
