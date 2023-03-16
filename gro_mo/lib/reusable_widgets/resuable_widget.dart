@@ -69,3 +69,42 @@ Container reusableButton(BuildContext context, String title, Function onTap,
     ),
   );
 }
+
+AlertDialog confirmAction(
+    String message,
+    String confirmText,
+    Function confirmFunc,
+    String denyText,
+    Function denyFunc) {
+  return AlertDialog(
+    content: Text(message,
+        style:
+        const TextStyle(color: Colors.black, fontFamily: 'Roboto')),
+    actions: [
+      ElevatedButton(
+          onPressed: () {
+            confirmFunc();
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0xFF101D24),
+            shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+          ),
+          child: Text(confirmText,
+              style: const TextStyle(
+                  color: Colors.white, fontFamily: 'Roboto'))),
+      ElevatedButton(
+          onPressed: () {
+            denyFunc();
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0xFF101D24),
+            shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+          ),
+          child: Text(denyText,
+              style: const TextStyle(
+                  color: Colors.white, fontFamily: 'Roboto')))
+    ],
+  );
+}

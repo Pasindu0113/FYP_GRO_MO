@@ -8,6 +8,7 @@ import '../reusable_widgets/resuable_widget.dart';
 
 class StartScreen extends StatefulWidget {
   const StartScreen({super.key});
+  static String nameOfCurrentUser = '';
 
   @override
   State<StartScreen> createState() => _StartScreenState();

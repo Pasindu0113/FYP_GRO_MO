@@ -1,9 +1,11 @@
 //import 'package:flutter/src/widgets/framework.dart';
 //import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:gro_mo/screens/resetPassword_screen.dart';
 import 'package:gro_mo/screens/signup_screen.dart';
+import 'package:gro_mo/screens/start_screen.dart';
 
 import '../reusable_widgets/resuable_widget.dart';
 import 'home_screen.dart';
@@ -71,13 +73,20 @@ class _SignInScreenState extends State<SignInScreen> {
                 height: 20,
               ),
               reusableButton(context, "LOG IN", () {
-                FirebaseAuth.instance.signInWithEmailAndPassword(email: _userNameTextController.text, password: _passwordTextController.text).then((value) {
+                FirebaseAuth.instance.signInWithEmailAndPassword(email: _userNameTextController.text, password: _passwordTextController.text).then((value) async {
+                  final User? user = FirebaseAuth.instance.currentUser;
+                  final userID = user?.uid;
+                  DatabaseReference referenceForName =
+                  FirebaseDatabase.instance.ref("Users/$userID/userName");
+                  DatabaseEvent eventForName = await referenceForName.once();
+                  StartScreen.nameOfCurrentUser = eventForName.snapshot.value.toString();
+
                   Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
                 }).catchError((onError){
                   showDialog(context: context, builder: (BuildContext context){
                     return AlertDialog(
                       title: Text("Error"),
-                      content: Text(onError.toString()),
+                      content: Text("Invalid Username or Password"),
                       actions: [
                         ElevatedButton(onPressed: () {
                           Navigator.of(context).pop();

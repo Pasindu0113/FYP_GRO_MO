@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:gro_mo/screens/start_screen.dart';
 import '../reusable_widgets/resuable_widget.dart';
 import 'home_screen.dart';
 
@@ -12,6 +14,8 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  final databaseReference = FirebaseDatabase.instance.ref().child("Users");
+
   TextEditingController _passwordTextController = TextEditingController();
   TextEditingController _emailTextController = TextEditingController();
   TextEditingController _userNameTextController = TextEditingController();
@@ -70,6 +74,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
               reusableButton(context, "REGISTER", () {
                 FirebaseAuth.instance.createUserWithEmailAndPassword(email: _emailTextController.text, password: _passwordTextController.text).then((value) {
                   print("Created New Account");
+                  StartScreen.nameOfCurrentUser = _userNameTextController.text;
+                  final User? user = FirebaseAuth.instance.currentUser;
+                  final userID = user?.uid;
+                  databaseReference.child(userID!).set({
+                    'userName': _userNameTextController.text,
+                    'userEmail': _emailTextController.text,
+                  });
                   Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
                 }).catchError((err){
                   showDialog(context: context, builder: (BuildContext context){
