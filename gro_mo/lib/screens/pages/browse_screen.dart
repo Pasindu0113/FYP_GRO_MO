@@ -45,91 +45,136 @@ class _BrowseScreenState extends State<BrowseScreen> {
   }
 
   Widget buildHerbs(Herb herb) {
-    return ListTileTheme(
+    return Container(
+        padding: EdgeInsets.fromLTRB(10, 20, 10, 20),
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(width: 1.5, color: Colors.grey),
+          ),
+        ),
         child: ListTile(
-      shape: RoundedRectangleBorder(
-        side: BorderSide(color: Colors.black, width: 4),
-        borderRadius: BorderRadius.circular(5),
-      ),
-      leading: ClipOval(
-        child: SizedBox.fromSize(
-            size: Size.fromRadius(30), // Image radius
-            child: returnImage(context, herb.imageReference!)),
-      ),
-      title: Text(
-        herb.name!,
-        style: TextStyle(
-            color: Colors.black,
-            fontFamily: 'Roboto',
-            fontSize: 18,
-            fontWeight: FontWeight.bold),
-      ),
-      trailing: Icon(Icons.more_vert_outlined),
-      onTap: () {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              contentPadding: EdgeInsets.zero,
-              content: SizedBox(
-                width: double.infinity,
-                height: double.infinity,
-                child: Column(children: <Widget>[
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: IconButton(
-                      icon: const Icon(Icons.close_outlined),
-                      color: Colors.black,
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
+          leading: ClipOval(
+            child: SizedBox.fromSize(
+                size: Size.fromRadius(30), // Image radius
+                child: returnImage(context, herb.imageReference!)),
+          ),
+          title: Text(
+            herb.name!,
+            style: TextStyle(
+                color: Colors.black,
+                fontFamily: 'Roboto',
+                fontSize: 18,
+                fontWeight: FontWeight.bold),
+          ),
+          trailing: Icon(Icons.more_vert_outlined),
+          onTap: () {
+            showGeneralDialog(
+              barrierDismissible: false,
+              transitionDuration: const Duration(milliseconds: 200),
+              context: context,
+              pageBuilder: (BuildContext context, Animation animation,
+                  Animation secondAnimation) {
+                return AlertDialog(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(herb.name!.toString()),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Center(
-                    child: SizedBox(
-                      width: 50,
-                      height: 50,
-                      child: returnImage(context, herb.imageReference!),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(herb.description!.toString()),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(herb.soilTypes!.toString()),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(herb.imageReference!.toString()),
-                  ),
-                ]),
-              ),
+                  contentPadding: EdgeInsets.fromLTRB(20, 30, 20, 10),
+                  scrollable: true,
+                  content: SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height,
+                      child: SingleChildScrollView(
+                        child: Column(children: <Widget>[
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                              child: IconButton(
+                                icon: const Icon(Icons.close_outlined),
+                                color: Colors.black,
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            )
+                          ),
+                          Center(
+                            child: Text(
+                              herb.name!.toString(),
+                              style: TextStyle(
+                                  fontSize: 25,
+                                  fontFamily: 'Roboto',
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
+                              textAlign: TextAlign.left,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Center(
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.6,
+                              height: MediaQuery.of(context).size.width * 0.6,
+                              child: returnImage(context, herb.imageReference!),
+                            ),
+                          ),
+                          Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+                                child: Text(
+                                  herb.description!.toString(),
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: 'Roboto',
+                                      color: Colors.black),
+                                  textAlign: TextAlign.left,
+                                ),
+                              )),
+                          Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+                                child: Text(
+                                  "Suitable soil types",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontFamily: 'Roboto',
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black),
+                                  textAlign: TextAlign.left,
+                                ),
+                              )),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: ListView.builder(
+                                padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                shrinkWrap: true,
+                                itemCount: herb.soilTypes?.length,
+                                itemBuilder: (context, index) {
+                                  return ListTile(
+                                    contentPadding:
+                                        EdgeInsets.symmetric(vertical: 4.0),
+                                    dense: true,
+                                    title: Text(
+                                      herb.soilTypes?[index],
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontFamily: 'Roboto',
+                                          color: Colors.black),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  );
+                                }),
+                          ),
+                        ]),
+                      )),
+                );
+              },
             );
           },
-        );
-      },
-    ));
+        ));
   }
 
   @override
@@ -166,10 +211,11 @@ class _BrowseScreenState extends State<BrowseScreen> {
               stream: getHerbs(),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
-                  return Text("Error");
+                  return Text("");
                 } else if (snapshot.hasData) {
                   final herbs = snapshot.data!;
                   return ListView(
+                    padding: EdgeInsets.fromLTRB(10, 20, 10, 20),
                     children: herbs.map(buildHerbs).toList(),
                   );
                 } else {
