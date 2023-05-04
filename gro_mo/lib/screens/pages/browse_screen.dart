@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../classes/Herb.dart';
+import '../../classes/Soil.dart';
 
 class BrowseScreen extends StatefulWidget {
   const BrowseScreen({Key? key}) : super(key: key);
@@ -13,10 +13,10 @@ class BrowseScreen extends StatefulWidget {
 }
 
 class _BrowseScreenState extends State<BrowseScreen> {
-  Stream<List<Herb>> getHerbs() {
-    var data = FirebaseFirestore.instance.collection("Herbs").snapshots().map(
+  Stream<List<Soil>> getSoil() {
+    var data = FirebaseFirestore.instance.collection("Soil").snapshots().map(
         (snapshot) =>
-            snapshot.docs.map((doc) => Herb.fromJson(doc.data())).toList());
+            snapshot.docs.map((doc) => Soil.fromJson(doc.data())).toList());
     return data;
   }
 
@@ -44,7 +44,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
     );
   }
 
-  Widget buildHerbs(Herb herb) {
+  Widget buildSoil(Soil soil) {
     return Container(
         padding: EdgeInsets.fromLTRB(10, 20, 10, 20),
         decoration: BoxDecoration(
@@ -56,10 +56,10 @@ class _BrowseScreenState extends State<BrowseScreen> {
           leading: ClipOval(
             child: SizedBox.fromSize(
                 size: Size.fromRadius(30), // Image radius
-                child: returnImage(context, herb.imageReference!)),
+                child: returnImage(context, soil.imageReference!)),
           ),
           title: Text(
-            herb.name!,
+            soil.name!,
             style: TextStyle(
                 color: Colors.black,
                 fontFamily: 'Roboto',
@@ -100,7 +100,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
                           ),
                           Center(
                             child: Text(
-                              herb.name!.toString(),
+                              soil.name!.toString(),
                               style: TextStyle(
                                   fontSize: 25,
                                   fontFamily: 'Roboto',
@@ -116,7 +116,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
                             child: Container(
                               width: MediaQuery.of(context).size.width * 0.6,
                               height: MediaQuery.of(context).size.width * 0.6,
-                              child: returnImage(context, herb.imageReference!),
+                              child: returnImage(context, soil.imageReference!),
                             ),
                           ),
                           Align(
@@ -124,7 +124,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
                               child: Padding(
                                 padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
                                 child: Text(
-                                  herb.description!.toString(),
+                                  soil.description!.toString(),
                                   style: TextStyle(
                                       fontSize: 16,
                                       fontFamily: 'Roboto',
@@ -137,7 +137,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
                               child: Padding(
                                 padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
                                 child: Text(
-                                  "Suitable soil types",
+                                  "Crop Suggestion",
                                   style: TextStyle(
                                       fontSize: 18,
                                       fontFamily: 'Roboto',
@@ -151,14 +151,14 @@ class _BrowseScreenState extends State<BrowseScreen> {
                             child: ListView.builder(
                                 padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                                 shrinkWrap: true,
-                                itemCount: herb.soilTypes?.length,
+                                itemCount: soil.crops?.length,
                                 itemBuilder: (context, index) {
                                   return ListTile(
                                     contentPadding:
                                         EdgeInsets.symmetric(vertical: 4.0),
                                     dense: true,
                                     title: Text(
-                                      herb.soilTypes?[index],
+                                      soil.crops?[index],
                                       style: TextStyle(
                                           fontSize: 16,
                                           fontFamily: 'Roboto',
@@ -207,16 +207,16 @@ class _BrowseScreenState extends State<BrowseScreen> {
               height: 20,
             ),
             Expanded(
-                child: StreamBuilder<List<Herb>>(
-              stream: getHerbs(),
+                child: StreamBuilder<List<Soil>>(
+              stream: getSoil(),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return Text("");
                 } else if (snapshot.hasData) {
-                  final herbs = snapshot.data!;
+                  final soil = snapshot.data!;
                   return ListView(
                     padding: EdgeInsets.fromLTRB(10, 20, 10, 20),
-                    children: herbs.map(buildHerbs).toList(),
+                    children: soil.map(buildSoil).toList(),
                   );
                 } else {
                   return Center(child: CircularProgressIndicator());

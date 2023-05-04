@@ -3,8 +3,12 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:core';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gro_mo/screens/pages/soil_list_screen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 
@@ -22,7 +26,7 @@ class _CreateScreenState extends State<CreateScreen> {
   String? soilType = "";
 
   getSoilType() async {
-    final request = http.MultipartRequest("POST",Uri.parse("https://b998-161-74-230-5.ngrok-free.app/predict"));
+    final request = http.MultipartRequest("POST",Uri.parse("https://4667-161-74-224-4.ngrok-free.app/predict"));
     final headers = {"Content-type": "multipart/form-data"};
 
     request.files.add(http.MultipartFile('image',
@@ -90,33 +94,80 @@ class _CreateScreenState extends State<CreateScreen> {
                 height: 20,
               ),
               soilType == ""
-                ? Text("") : Text("Soil Type is $soilType")
+                ? Text("") : Text("Soil Type is $soilType"),
+              const SizedBox(
+                height: 20,
+              ),
+              if(soilType != "")
+                reusableButton(context, "Save Classification", () async {
+                  if (selectedImage == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text(
+                          'Please upload an image',
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 17,
+                          ),
+                        )));
+                    return;
+                  }
+
+                  String uniqueFileName =
+                  DateTime.now().millisecondsSinceEpoch.toString();
+
+                  Reference referenceRoot = FirebaseStorage.instance.ref();
+                  Reference referenceDirImages = referenceRoot.child('scannedImages');
+
+                  //Create a reference for the image to be stored
+                  Reference referenceImageToUpload =
+                  referenceDirImages.child(uniqueFileName);
+
+                  //Handle errors/success
+                  try {
+                    //Store the file
+                    await referenceImageToUpload
+                        .putFile(File(selectedImage!.path));
+
+                  } catch (error) {
+                    //Some error occurred
+                    print(error.toString());
+                  }
+
+                  final User? user = FirebaseAuth.instance.currentUser;
+                  final userID = user?.uid;
+
+                  FirebaseFirestore db = FirebaseFirestore.instance;
+
+                  String uniqueId = "DS${DateTime.now().millisecondsSinceEpoch}";
+
+                  //Create a Map of data
+                  Map<String, dynamic> dataToSend = {
+                    'soilType': soilType,
+                    'imageReference': uniqueFileName,
+                    'userReference': userID
+                  };
+
+                  db
+                      .collection("ClassifiedSoil")
+                      .doc(uniqueId)
+                      .set(dataToSend)
+                      .then((value) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text(
+                          'Classification successfully saved to database',
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 17,
+                          ),
+                        )));
+                  }).catchError((err) {
+                    print(err);
+                  });
+                }, MediaQuery.of(context).size.width, 50, Color(0xFF101D24)),
             ]),
           ),
         ),
       ),
     );
   }
-
-//   Future pickImage() async {
-//     final ImagePicker _picker = ImagePicker();
-// // Pick an image
-//     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-// //TO convert Xfile into file
-//     File file = File(image!.path);
-// //print(‘Image picked’);
-//     return file;
-//
-//     // XFile? pickedFile =
-//     // await imagePicker.pickImage(source: ImageSource.gallery);
-//     // print('This file path ${file?.path}');
-//     //
-//     // if (file == null) return;
-//     // //final pickedFile = await imagePicker.getImage(source: ImageSource.camera);
-//     //
-//     // setState(() {
-//     //   file = pickedFile;
-//     //   print('This file path ${pickedFile?.path}');
-//     // });
-//   }
 }

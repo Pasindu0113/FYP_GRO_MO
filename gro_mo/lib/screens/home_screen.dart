@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:gro_mo/screens/pages/account_screen.dart';
 import 'package:gro_mo/screens/pages/browse_screen.dart';
-import 'package:gro_mo/screens/pages/chat_screen.dart';
 import 'package:gro_mo/screens/pages/create_screen.dart';
 import 'package:gro_mo/screens/pages/search_screen.dart';
+import 'package:gro_mo/screens/pages/soil_list_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -27,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
     BrowseScreen(),
     SearchScreen(),
     CreateScreen(),
-    ChatScreen(),
+    SoilListScreen(),
     AccountScreen()
   ];
 
@@ -54,8 +53,8 @@ class _HomeScreenState extends State<HomeScreen> {
             label: 'Upload picture',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.chat_bubble_outline),
-            label: 'Chat',
+            icon: Icon(Icons.list),
+            label: 'Scanned Images',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
